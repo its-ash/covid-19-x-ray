@@ -4,16 +4,17 @@ import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, datasets, utils , models
-from pathlib import Path
+from dataset import dataset_path
 
 
 WIDTH = 300
 HEIGHT = 300
-BATCH_SIZE = 3
+BATCH_SIZE = 32
 
 
 transformation = transforms.Compose([
-    transforms.Resize((WIDTH, HEIGHT)),
+    transforms.Resize((WIDTH+100, HEIGHT+100)),
+    transforms.CenterCrop((WIDTH, HEIGHT)),
     transforms.Grayscale(),
     transforms.ColorJitter(
         brightness=0.4,
@@ -29,9 +30,12 @@ transformation = transforms.Compose([
 
 
 
-dataset = datasets.ImageFolder('dataset', transform=transformation)
+dataset = datasets.ImageFolder(dataset_path, transform=transformation)
 dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 
-images,labels = next(iter(dataloader))
-plt.imshow(utils.make_grid(images)[0])
+
+
+def plot_sample_data():
+    images,_ = next(iter(dataloader))
+    plt.imshow(utils.make_grid(images)[0])
 
