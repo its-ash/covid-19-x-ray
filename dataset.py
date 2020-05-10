@@ -38,6 +38,7 @@ print("Image Dir Found", images_dir.is_dir())
 
 path = Path(os.getcwd())
 dataset_path = path / 'dataset'
+shutil.rmtree(dataset_path) if dataset_path.is_dir() else None
 os.mkdir(dataset_path) if not dataset_path.is_dir() else None   
 
 print("Creating Dataset")
