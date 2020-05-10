@@ -56,8 +56,7 @@ non_covid_path = dataset_path / 'class_non-covid'
 os.mkdir(non_covid_path) if not non_covid_path.is_dir() else None   
 pneumocystis_path = dataset_path / 'class_pneumocystis'
 os.mkdir(pneumocystis_path) if not pneumocystis_path.is_dir() else None   
-othter_path = dataset_path / 'class_others'
-os.mkdir(othter_path) if not othter_path.is_dir() else None   
+
 
 
 
@@ -90,7 +89,7 @@ for folder in os.listdir(dataset_path):
         else:
             for item in os.listdir(folder_path):
                 copy(item, folder_path, item, non_covid_path)
-                
+
     
 for folder in os.listdir(dataset_path):
   if 'class' not in folder:

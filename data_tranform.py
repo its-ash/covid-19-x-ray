@@ -36,6 +36,16 @@ transformation = transforms.Compose([
 
 
 
+
+
+
+from dataset import dataset_path
 from Net import CustomNet
 
 model = CustomNet(3)
+
+dataset = datasets.ImageFolder(dataset_path, transform=transformation)
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+
+images,labels = next(iter(dataloader))
+imshow(utils.make_grid(images))
