@@ -9,7 +9,7 @@ from pathlib import Path
 
 WIDTH = 300
 HEIGHT = 300
-BATCH_SIZE = 1
+BATCH_SIZE = 3
 
 
 transformation = transforms.Compose([

@@ -28,6 +28,7 @@ class MyNet(nn.Module):
         )
     def __init__(self, num_class):
         super(MyNet, self).__init__()
+        self.num_class = num_class
         # 2D Layer
         self.layer1 = self.__get_model(1, 32)
         self.layer2 = self.__get_model(32, 64)
@@ -37,8 +38,7 @@ class MyNet(nn.Module):
         self.layer6 = self.__get_model(64, 32)
 
         # Linear Input
-        self.layer_flat1 = self.__get_model_linear(
-            32 * 2 * 2 * BATCH_SIZE, 4094, _dropout=0.5)
+        self.layer_flat1 = self.__get_model_linear(32 * 2 * 2, 4094, _dropout=0.5)
         self.layer_flat2 = self.__get_model_linear(4094, 2048)
         self.layer_flat3 = self.__get_model_linear(2048, 1024)
         self.layer_flat4 = self.__get_model_linear(1024, 512)
@@ -51,10 +51,10 @@ class MyNet(nn.Module):
         self.layer9 = self.__get_model(512, 128)
 
         # Linear Input
-        self.layer_flat7 = self.__get_model_linear(46 * 46, 1024)
+        self.layer_flat7 = self.__get_model_linear(128 * 4 * 4, 1024)
         self.layer_flat8 = self.__get_model_linear(1024, 512)
 
-        self.final = nn.Sequential(nn.Linear(512, num_class), nn.Softmax())
+        self.final = nn.Sequential(nn.Linear(512, self.num_class), nn.Softmax())
 
     def forward(self, x):
         x = self.layer1(x)
@@ -63,15 +63,18 @@ class MyNet(nn.Module):
         x = self.layer4(x)
         x = self.layer5(x)
         x = self.layer6(x)
-        x = x.view(-1)
+        x = x.view(-1, 32*2*2)
         x = self.layer_flat1(x)
         x = self.layer_flat2(x)
         x = self.layer_flat3(x)
         x = self.layer_flat4(x)
         x = self.layer_flat5(x)
         x = self.layer_flat6(x)
-        x = x.reshape(1, 1, 46, 46)
-        x = x.view(-1)
+        x = x.reshape(-1,1, 46, 46)
+        x = self.layer7(x)
+        x = self.layer8(x)
+        x = self.layer9(x)
+        x = x.view(-1, 128 * 4 * 4 )
         x = self.layer_flat7(x)
         x = self.layer_flat8(x)
         x = self.final(x)
