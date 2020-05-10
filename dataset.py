@@ -80,6 +80,7 @@ for item in os.listdir(pn_path):
 
 for folder in os.listdir(dataset_path):
     folder_path = dataset_path / folder
+    print(folder)
     if 'covid' in folder.lower():
         for item in os.listdir(folder_path):
             copy(item, folder_path, item, covid_path)
@@ -90,7 +91,7 @@ for folder in os.listdir(dataset_path):
         for item in os.listdir(folder_path):
             copy(item, folder_path, item, non_covid_path)
     else:
-        print(folder)
+        
         for item in os.listdir(folder_path):
             copy(item, folder_path, item, othter_path)
     
