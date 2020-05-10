@@ -80,7 +80,6 @@ for item in os.listdir(pn_path):
 
 for folder in os.listdir(dataset_path):
     folder_path = dataset_path / folder
-    print(folder)
     if not 'class' in folder.lwer():
         if 'covid' in folder.lower():
             for item in os.listdir(folder_path):
@@ -88,13 +87,10 @@ for folder in os.listdir(dataset_path):
         elif 'pneum' in folder.lower():
             for item in os.listdir(folder_path):
                 copy(item, folder_path, item, pneumocystis_path)
-        elif 'no finding' or 'normal' in folder.lower():
+        else:
             for item in os.listdir(folder_path):
                 copy(item, folder_path, item, non_covid_path)
-        else:
-            
-            for item in os.listdir(folder_path):
-                copy(item, folder_path, item, othter_path)
+                
     
 for folder in os.listdir(dataset_path):
   if 'class' not in folder:
