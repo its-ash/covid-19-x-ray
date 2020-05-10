@@ -1,23 +1,14 @@
-
+import importlib
 import os
-import glob
-from random import choice
-import pandas as pd
-import torch.nn as nn
-import torch.nn.functional as F
-from PIL import Image
-from IPython.display import clear_output
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.image as img
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, datasets, utils , models
 from pathlib import Path
-from 
 
-WIDTH = 256
-HEIGHT = 256
+
+WIDTH = 300
+HEIGHT = 300
 
 
 transformation = transforms.Compose([
@@ -29,23 +20,17 @@ transformation = transforms.Compose([
         saturation=0.4,
     ),
     transforms.RandomRotation(10),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                         std=[0.229, 0.224, 0.225]),
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.456],
+                         std=[0.224]),
+   
 ])
 
 
 
-
-
-
-from dataset import dataset_path
-from Net import CustomNet
-
-model = CustomNet(3)
-
-dataset = datasets.ImageFolder(dataset_path, transform=transformation)
-dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+dataset = datasets.ImageFolder('dataset', transform=transformation)
+dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
 
 images,labels = next(iter(dataloader))
-imshow(utils.make_grid(images))
+plt.imshow(utils.make_grid(images)[0])
+
