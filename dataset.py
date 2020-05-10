@@ -11,15 +11,6 @@ normal_data = Path(os.getcwd()) / 'chest_xray'
 
 
 
-if not repo_path.is_dir():
-    print("Dowbloading Covid-19 Datasets ..", end="")
-    process = subprocess.Popen(['git',
-                                'clone',
-                                'https://github.com/ieee8023/covid-chestxray-dataset.git'],
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-    print("\t\tDone")
-
 metadata = pd.read_csv(repo_path / 'metadata.csv')
 x_ray_data = metadata[metadata.modality == 'X-ray']
 x_ray = x_ray_data[x_ray_data.view=='PA']
@@ -68,18 +59,12 @@ othter_path = dataset_path / 'class_others'
 os.mkdir(othter_path) if not othter_path.is_dir() else None   
 
 
-if not normal_data.is_dir():
-    print('Downloading Images')
-    process = subprocess.Popen(['wget',
-                                'https://data.mendeley.com/datasets/rscbjbr9sj/2/files/f12eaf6d-6023-432f-acc9-80c9d7393433/ChestXRay2017.zip'],
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-    print(process.stdout.read())
-    file_name = "ChestXRay2017.zip"
-    with ZipFile(file_name, 'r') as zip: 
-        print('Extracting all the files now...') 
-        zip.extractall() 
-        print('Done!')
+
+file_name = "ChestXRay2017.zip"
+with ZipFile(file_name, 'r') as zip: 
+    print('Extracting all the files now...') 
+    zip.extractall() 
+    print('Done!')
 
 normal_path = normal_data / 'train' / 'NORMAL'
 for item in os.listdir(normal_path):
