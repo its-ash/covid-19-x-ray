@@ -9,6 +9,7 @@ from pathlib import Path
 
 WIDTH = 300
 HEIGHT = 300
+BATCH_SIZE = 1
 
 
 transformation = transforms.Compose([
@@ -29,7 +30,7 @@ transformation = transforms.Compose([
 
 
 dataset = datasets.ImageFolder('dataset', transform=transformation)
-dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 images,labels = next(iter(dataloader))
 plt.imshow(utils.make_grid(images)[0])
