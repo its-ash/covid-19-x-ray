@@ -6,29 +6,29 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, datasets, utils , models
 from dataset import dataset_path, create_dataset
 
-create_dataset()
-
 
 WIDTH = 300
 HEIGHT = 300
 
 
 transformation = transforms.Compose([
-    transforms.Resize((WIDTH+100, HEIGHT+100)),
+    transforms.Resize((WIDTH+50, HEIGHT+50)),
     transforms.CenterCrop((WIDTH, HEIGHT)),
     transforms.Grayscale(),
     transforms.ColorJitter(
-        brightness=0.4,
-        contrast=0.4,
-        saturation=0.4,
+        brightness=0.1,
+        contrast=0.1,
+        saturation=0.1,
     ),
-    transforms.RandomRotation(10),
+    transforms.RandomRotation(5),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.456],
                          std=[0.224]),
    
 ])
 
+
+create_dataset()
 
 dataset = datasets.ImageFolder(dataset_path, transform=transformation)
 

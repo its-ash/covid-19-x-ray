@@ -1,4 +1,3 @@
-from zipfile import ZipFile 
 import subprocess
 from pathlib import Path
 import pandas as pd
@@ -8,11 +7,9 @@ import shutil
 cwd = Path(os.getcwd())
 
 repo_path = cwd / 'covid-chestxray-dataset'
-data_path = cwd / 'chest_xray'
 
 images_dir = repo_path / 'images'
 dataset_path = cwd / 'dataset'
-
 
 
 def read_metadata():
@@ -61,34 +58,8 @@ def create_dataset():
         
         covid_path = dataset_path / 'class_covid'
         os.mkdir(covid_path) if not covid_path.is_dir() else None   
-        non_covid_path = dataset_path / 'class_non-covid'
+        non_covid_path = dataset_path / 'class_non_covid'
         os.mkdir(non_covid_path) if not non_covid_path.is_dir() else None   
-        pneumocystis_path = dataset_path / 'class_pneumocystis'
-        os.mkdir(pneumocystis_path) if not pneumocystis_path.is_dir() else None   
-        
-        file_name = "ChestXRay2017.zip"
-
-        with ZipFile(file_name, 'r') as zip: 
-            print(':\t[Extracting Files]') 
-            zip.extractall() 
-            print(':\t[Extracting Done!]')
-
-
-        max_item = 0
-        for item in os.listdir(dataset_path):
-            size = len(os.listdir(dataset_path / item))
-            max_item = size if size > max_item else max_item
-
-
-        normal_path = data_path / 'train' / 'NORMAL'
-        for item in os.listdir(normal_path)[:max_item]:
-            copy(item, normal_path, item, non_covid_path)
-            
-
-        pn_path = data_path / 'train' / 'PNEUMONIA'
-        for item in os.listdir(pn_path)[:max_item]:
-            copy(item, pn_path, item, pneumocystis_path)
-
 
 
         for folder in os.listdir(dataset_path):
@@ -97,9 +68,6 @@ def create_dataset():
                 if 'covid' in folder.lower():
                     for item in os.listdir(folder_path):
                         copy(item, folder_path, item, covid_path)
-                elif 'pneum' in folder.lower():
-                    for item in os.listdir(folder_path):
-                        copy(item, folder_path, item, pneumocystis_path)
                 else:
                     for item in os.listdir(folder_path):
                         copy(item, folder_path, item, non_covid_path)

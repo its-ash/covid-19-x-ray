@@ -2,14 +2,23 @@ from data_tranform import get_loader, plot_sample_data, create_dataset
 from model import MyNet, nn
 from torch import optim
 import torch
+from PIL import Image
+from data_tranform import transformation, dataset
+
 
 MODEL = None
+
+def predict(image_name_with_path):
+    global MODEL
+    model = MODEL.cpu()
+    img = Image.open(image_name_with_path)
+    print(dataset.classes[torch.argmax(model(torch.unsqueeze(transformation(img),1))).item()])
 
 
 def train(epoch, batch):
     dataloader = get_loader(batch)
 
-    net = MyNet(3)
+    net = MyNet(len(dataset.classes))
 
     optimizer = optim.Adam(net.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss()
@@ -33,5 +42,8 @@ def train(epoch, batch):
 
         print('Epoch: {}, Avg. Loss: {}, Accuracy: {}'.format(
             epoch + 1, running_loss/len(dataloader.dataset), accuracy))
+
     global MODEL
     MODEL = net
+
+    return net

@@ -33,10 +33,10 @@ class MyNet(nn.Module):
 
         self.linear_size = 512 * 1 * 1
 
-        self.layer7 = self.__linear__model__(self.linear_size, 256)
-        self.layer8 = self.__linear__model__(256, 128)
-        self.layer9 = self.__linear__model__(128, 64)
-        self.layer10 = self.__linear__model__(64, 128)
+        self.layer7 = self.__linear__model__(self.linear_size, 512)
+        self.layer8 = self.__linear__model__(512, 256)
+        self.layer9 = self.__linear__model__(256, 128)
+        self.layer10 = self.__linear__model__(128, 128)
         self.layer11 = self.__linear__model__(128, 512)
         self.final = nn.Sequential(
             nn.Linear(512, num_class), nn.Softmax(dim=1))
