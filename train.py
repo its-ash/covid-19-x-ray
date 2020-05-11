@@ -16,9 +16,16 @@ def predict(image_name_with_path):
 
 
 def train(epoch, batch):
+    if torch.cuda.is_available():
+        device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
+        print("Running on the GPU")
+    else:
+        device = torch.device("cpu")
+        print("Running on the CPU")
     dataloader = get_loader(batch)
 
     net = MyNet(len(dataset.classes))
+    net = net.to(device)
 
     optimizer = optim.Adam(net.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss()
@@ -30,14 +37,17 @@ def train(epoch, batch):
         correct = 0.0
         for _, data in enumerate(dataloader):
             image, label = data
+            image = image.to(device)
+            label = label.to(device)
             output = net(image)
             loss = criterion(output, label)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            loss = loss.cpu()
             running_loss += loss.item() * image.data.size(0)
             _, predicted = torch.max(output.data, 1)
-            correct += (predicted == label).sum().item()
+            correct += (predicted == label.cpu()).sum().item()
         accuracy = 100 * correct / len(dataloader.dataset)
 
         print('Epoch: {}, Avg. Loss: {}, Accuracy: {}'.format(

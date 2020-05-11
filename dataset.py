@@ -70,6 +70,8 @@ def create_dataset():
                         copy(item, folder_path, item, covid_path)
                 else:
                     for item in os.listdir(folder_path):
+                        copy(item, folder_path, "test__"+item, non_covid_path)
+                        copy(item, folder_path, "test__1"+item, non_covid_path)
                         copy(item, folder_path, item, non_covid_path)
 
         
