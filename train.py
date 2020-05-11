@@ -8,11 +8,15 @@ from data_tranform import transformation, dataset
 
 MODEL = None
 
-def predict(image_name_with_path):
+def predict():
+    from google.colab import files
+    source = files.upload()
     global MODEL
     model = MODEL.cpu()
-    img = Image.open(image_name_with_path)
-    print(dataset.classes[torch.argmax(model(torch.unsqueeze(transformation(img),1))).item()])
+    img = Image.open(list(source.keys())[0])
+    response = model(torch.unsqueeze(transformation(img),1))
+    position = torch.argmax(response).item()
+    print(dataset.classes[position], response[position])
 
 
 def train(epoch, batch):
@@ -47,7 +51,7 @@ def train(epoch, batch):
             loss = loss.cpu()
             running_loss += loss.item() * image.data.size(0)
             _, predicted = torch.max(output.data, 1)
-            correct += (predicted == label.cpu()).sum().item()
+            correct += (predicted == label).sum().item()
         accuracy = 100 * correct / len(dataloader.dataset)
 
         print('Epoch: {}, Avg. Loss: {}, Accuracy: {}'.format(
