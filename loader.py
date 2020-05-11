@@ -12,3 +12,5 @@ libs = [data_tranform, dataset, model, train]
 for lib in libs:
     data = requests.get(lib, allow_redirects=True).content
     open(lib.split("/")[-1], 'wb').write(data)
+
+
